@@ -7,11 +7,18 @@ import { LLMChain } from "langchain/chains";
 import { retriever } from "/utils/retriever";
 import { serializeChatHistory } from "/utils/serializeChatHistory";
 
+// import { addDatabaseTable } from "./utils/splitDocument";
+
 // Add an event listener to the DOM
 document.addEventListener("submit", (e) => {
   e.preventDefault();
   runConversation();
 });
+
+// Add an event listener to the DOM when doc is fully loaded
+// document.addEventListener("DOMContentLoaded", (e) => {
+//   addDatabaseTable()
+// });
 
 const openAIApiKey = import.meta.env.VITE_OPENAI_API_KEY;
 
