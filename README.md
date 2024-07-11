@@ -3,7 +3,9 @@
 This is an LLM Chatbot powered by RAG. The tech stack includes Javascript, Langchain, OpenAI and Supabase vector store.
 
 LLM - Large Language Model  
-RAG - Retrieval Augumented Generation  
+RAG - Retrieval Augumented Generation 
+
+### please, Click to check it out [Project link](https://gym-buddy-rho.vercel.app/)
 
 For a video walkthrough, [click this YouTube link to watch]().
 
