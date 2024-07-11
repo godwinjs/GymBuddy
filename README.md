@@ -1,15 +1,13 @@
 # RAG Chatbot
 
-This is an LLM Chatbot powered by RAG. The tech stack includes Javascript, Langchain, OpenAI and Supabase vector store.
+This is an LLM Chatbot powered by RAG. The tech stack includes Javascript, Langchain, GoogleAI and Supabase vector store.
 
 LLM - Large Language Model  
 RAG - Retrieval Augumented Generation  
 
-For a video walkthrough, [click this YouTube link to watch]().
-
 ![image info](./images/thumbnail.png)
 
-1. Intall dependencies
+1. Install dependencies
 ```bash
 yarn
 ```
