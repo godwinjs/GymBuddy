@@ -1,18 +1,21 @@
 import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
-import { OpenAIEmbeddings } from "@langchain/openai";
+// import { OpenAIEmbeddings } from "@langchain/openai";
+import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { createClient } from "@supabase/supabase-js";
 
-const openAIApiKey = import.meta.env.VITE_OPENAI_API_KEY;
+const googleAIApiKey = import.meta.env.VITE_GOOGLEAI_API_KEY;
 const sbApiKey = import.meta.env.VITE_SUPABASE_API_KEY;
 const sbUrl = import.meta.env.VITE_SUPABASE_PROJECT_URL;
 
-if (!sbApiKey || !sbUrl || !openAIApiKey) {
+if (!sbApiKey || !sbUrl || !googleAIApiKey) {
   throw new Error(
     "Supabase/OpenAI environment variables not set. Please set them in the .env file"
   );
 }
 
-const embeddings = new OpenAIEmbeddings({ openAIApiKey });
+// const embeddings = new OpenAIEmbeddings({ openAIApiKey });
+const embeddings = new GoogleGenerativeAIEmbeddings({ apiKey: googleAIApiKey });
+
 
 const supabaseClient = createClient(sbUrl, sbApiKey);
 

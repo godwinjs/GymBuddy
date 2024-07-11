@@ -29,7 +29,7 @@ main {
 
 .chatbot-container {
   background-color: #003049;
-  width: 360px;
+  width: 430px;
   border-radius: var(--border-rad-lg);
   padding: 1em;
 }

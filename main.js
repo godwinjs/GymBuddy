@@ -1,13 +1,14 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { RunnableSequence } from "@langchain/core/runnables";
 import { formatDocumentsAsString } from "langchain/util/document";
 import { BufferMemory } from "langchain/memory";
 import { LLMChain } from "langchain/chains";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+
 import { retriever } from "/utils/retriever";
 import { serializeChatHistory } from "/utils/serializeChatHistory";
 
-import { addDatabaseTable } from "./utils/splitDocument";
+// import { addDatabaseTable } from "./utils/splitDocument";
 
 // Add an event listener to the DOM
 document.addEventListener("submit", (e) => {
@@ -17,10 +18,12 @@ document.addEventListener("submit", (e) => {
 
 // Add an event listener to the DOM when doc is fully loaded
 document.addEventListener("DOMContentLoaded", (e) => {
-  addDatabaseTable()
+  // addDatabaseTable()
 });
 
-const openAIApiKey = import.meta.env.VITE_OPENAI_API_KEY;
+// const openAIApiKey = import.meta.env.VITE_OPENAI_API_KEY;
+console.log(process.env.NODE_ENV)
+const googleAPIkey = import.meta.env.VITE_GOOGLEAI_API_KEY;
 
 const memory = new BufferMemory({
   memoryKey: "chatHistory",
@@ -44,7 +47,7 @@ Standalone question:`
 );
 
 const answerPrompt = PromptTemplate.fromTemplate(
-  `You are a helpful and enthusiastic support bot who can answer a given question about a fitness company based on the context provided and the chat history. Try to find the answer in the context. If the answer is not given in the context, find the answer in the chat history if possible. If you really don't know the answer, say "I'm sorry, I don't know the answer to that." And direct the user to email aswesomegym@sample.com. Don't try to make up an answer. Always speak as if you were chatting with a friend and you don't need to tell them where you got your response from.
+  `You are a helpful and enthusiastic support bot who can answer a given question about a fitness company based on the context provided and the chat history. Try to find the answer in the context. If the answer is not given in the context, find the answer in the chat history if possible. If you really don't know the answer, say "I'm sorry, I don't know the answer to that." if it's not a question say "I'm sorry i don't understand"  And direct the user to email ogbodogodwin.dev@gmail.com. Don't try to make up an answer. Always speak as if you were chatting with a friend and you don't need to tell them where you got your response from.
 ----------
 CONTEXT: {retrievedContext}
 ----------
@@ -55,15 +58,16 @@ QUESTION: {question}
 Helpful Answer:`
 );
 
-// Initialize fast and slow LLMs, along with chains for each
-const fasterModel = new ChatOpenAI({ openAIApiKey, model: "gpt-3.5-turbo" });
+const model = new ChatGoogleGenerativeAI({
+  model: "gemini-pro",
+  maxOutputTokens: 2048,
+  apiKey: googleAPIkey
+});
+const answerChain = new LLMChain({ llm: model, prompt: answerPrompt });
 const questionChain = new LLMChain({
-  llm: fasterModel,
+  llm: model,
   prompt: standaloneQuestionPrompt,
 });
-
-const slowerModel = new ChatOpenAI({ openAIApiKey, model: "gpt-4" });
-const answerChain = new LLMChain({ llm: slowerModel, prompt: answerPrompt });
 
 const performQuestionAnswering = async ({
   question,
